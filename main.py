@@ -1,9 +1,9 @@
-from flask import Flask, url_for  # url_for сама пропишет путь к файлу
+from flask import Flask, url_for, request  # url_for сама пропишет путь к файлу, связывает каталог статического каталога с изображение
 
 app = Flask(__name__)  # присваиваем имя нашему приложению
 
 
-@app.route('/')  # делаем декоратор для главной страницы
+@app.route('/')  # делаем декоратор для главной страницы, говорит о том, на какую страницу пойдем
 @app.route('/index')  #
 def index():  # ф-ция кот. будет что-то делать когда перейдем на главную страницу
     return 'Адмирал!<br><a href="/slogan">Слоган</a>'
@@ -50,6 +50,42 @@ def greeting(username):
     </head>
     <body>
     <h1>Привет, {username}</h1>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+    </body>
+    </html>"""
+@app.route('/slideshow')
+def slideshow():
+    return f"""<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Постер</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="{url_for('static', filename='css/style.css')}">
+    </head>
+    <body>
+    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="{url_for('static', filename='images/sea_1.jpg')}" class="d-block w-100" alt="Фото">
+    </div>
+    <div class="carousel-item">
+      <img src="{url_for('static', filename='images/sea_2.jpg')}" class="d-block w-100" alt="Фото">
+    </div>
+    <div class="carousel-item">
+      <img src="{url_for('static', filename='images/sea_3.jpg')}" class="d-block w-100" alt="Фото">
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-target="#carouselExampleControls" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-target="#carouselExampleControls" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </button>
+</div>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
     </body>
@@ -120,9 +156,48 @@ def variants(var):
                     </dl>
                 </body>
                 </html>"""
+@app.route('/form_sample', methods=['GET', 'POST'])  # methods=['GET', 'POST'] Разрешили оба метода
+def form_sample():
+    if request.method == 'GET':
+        return f"""<!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <title>Пример формы</title>
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+                <link rel="stylesheet" type="text/css" href="{url_for('static', filename='css/style.css')}">
+            </head>
+            <body>
+            <h1>Форма для регистрации</h1>
+            <div class="container">
+            <form class="login_form" method="post"> 
+            <input type="text" class="form-control" name="fname" placeholder="Фамилия">
+            <br>
+            <input type="text" class="form-control" name="sname" placeholder="Имя">
+            <br>
+            <input type="email" class="form-control" name="email" placeholder="E-mail">
+            <br>
+            <input type="password" class="form-control" name="password" placeholder="Password"> 
+            <br>
+            <div class='form-group'>
+            <label for="classSelect">Ваше образование</label>
+            <select class="form-control" id="classSelect" name="professional"> 
+            <option>Высшее</option>
+            <option>Среднее</option>
+            </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Отправить</button>
+            
+            </body>
+            </html>"""
+    elif request.method == 'POST':
+        print(request.form['fname'])
+        print(request.form['sname'])
+        return 'Форма отправлена'
+
 
 
 
 if __name__ == '__main__':  # любой скрипт,  кот. будем запускать он будет иметь имя main
-    app.run(host='127.0.0.1', port=8000, debug=True)  # указываем по какому хосту будем тестить наш сайт = по локальному,
+    app.run(host='127.0.0.1', port=5000, debug=True)  # указываем по какому хосту будем тестить наш сайт = по локальному,
                                 # также надо указать порт (16 разрядов выделено под порты) можно добавить debug on/off включаем ли отладку
