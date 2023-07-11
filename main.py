@@ -159,42 +159,28 @@ def variants(var):
 @app.route('/form_sample', methods=['GET', 'POST'])  # methods=['GET', 'POST'] Разрешили оба метода
 def form_sample():
     if request.method == 'GET':
-        return f"""<!DOCTYPE html>
-            <html lang="en">
-            <head>
-                <meta charset="UTF-8">
-                <title>Пример формы</title>
-                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
-                <link rel="stylesheet" type="text/css" href="{url_for('static', filename='css/style.css')}">
-            </head>
-            <body>
-            <h1>Форма для регистрации</h1>
-            <div class="container">
-            <form class="login_form" method="post"> 
-            <input type="text" class="form-control" name="fname" placeholder="Фамилия">
-            <br>
-            <input type="text" class="form-control" name="sname" placeholder="Имя">
-            <br>
-            <input type="email" class="form-control" name="email" placeholder="E-mail">
-            <br>
-            <input type="password" class="form-control" name="password" placeholder="Password"> 
-            <br>
-            <div class='form-group'>
-            <label for="classSelect">Ваше образование</label>
-            <select class="form-control" id="classSelect" name="professional"> 
-            <option>Высшее</option>
-            <option>Среднее</option>
-            </select>
-            </div>
-            <button type="submit" class="btn btn-primary">Отправить</button>
-            
-            </body>
-            </html>"""
+        with open('./templates/user_form.html', 'r', encoding='utf-8') as html_stream:
+            return html_stream.read()
     elif request.method == 'POST':
+        print(request.method)
         print(request.form['fname'])
         print(request.form['sname'])
         return 'Форма отправлена'
 
+
+@app.route('/load_photo', methods=['GET', 'POST']) # если у формы будет метод GET, то все появится на странице
+def load_photo():
+    if request.method == 'GET':
+        return f"""
+        <form class="login_form" method="post" enctype="multipart/form-data>
+            <div class="form-group">    
+                <label for="photo">Приложите фото:</label>
+                <input type="file" class="form-control-file" id="photo" name="file">
+            </div>
+            <br>
+        <button type="submit" class="btn btn-primary">Отправить</button>            
+        </form>
+        """
 
 
 
