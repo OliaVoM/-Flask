@@ -1,0 +1,14 @@
+{% extends "base.html" %} <!-- расширяем базовый шаблон, лишнее убрали, так как это есть у нас уже в base -->
+
+{% block content %}
+
+<h1 align="center">Ваши данные</h1>
+<img src="../static/images/loaded.png" alt="Фото"><br>
+{% set lst = ['Фамилия', 'Имя', 'Email', 'Пароль', 'Образование', 'Пол', 'О себе'] %}
+
+      {% for value in data.values() %}
+      {{ lst[loop.index0] }} - {{ value }} <br>
+
+      {% endfor %}
+
+{% endblock %}

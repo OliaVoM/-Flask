@@ -6,13 +6,13 @@ app = Flask(__name__)  # присваиваем имя нашему прилож
 
 
 @app.route('/')
-@app.route('/index')
-def index():
+@app.route('/index1')
+def index1():
     # return render_template('index.html', title='Работа с шаблонами', username="Слушатель")  # после этого в шаблон index.html вставится нужный
     param = {}
     param['username'] = "Слушатель"
-    param['title'] = "Работа с шаблонами"
-    return render_template('index.html', **param)
+    param['title'] = "Расширяем шаблоны"
+    return render_template('index1.html', **param)
 
 @app.route('/odd_even')
 def odd_even():
@@ -60,18 +60,15 @@ def load_photo():
         return '<h1>Файл у Вас на сервере </h1>'
 
 
-
-
 @app.route('/form_sample', methods=['GET', 'POST'])  # methods=['GET', 'POST'] Разрешили оба метода
 def form_sample():
     if request.method == 'GET':
-        with open('./templates/user_form.html', 'r', encoding='utf-8') as html_stream:
-            return html_stream.read()
+        return render_template('user_form.html', title='Форма')
     elif request.method == 'POST':
-        print(request.method)
-        print(request.form['fname'])
-        print(request.form['sname'])
-        return 'Форма отправлена'
+        f = request.files['file']  # сюда прочитали файл
+        f.save('./static/images/loaded.png')  # куда сохраняем, переименовываем принудительно
+        myform = request.form.to_dict()  # получаем форму и превращаем её в словарь
+        return render_template('filled_form.html', title='Ваши данные', data=myform)
 
 
 if __name__ == '__main__':  # любой скрипт,  кот. будем запускать он будет иметь имя main
