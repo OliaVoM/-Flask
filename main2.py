@@ -20,14 +20,15 @@ def odd_even():
 
 @app.route('/news')
 def news():
-    # with open('news.json', "rt", encoding='utf-8') as f:  # открываем файл и считываем строки
-    #     news_list = json.loads(f.read())  # загрузим ту строку, кот. прочитал, строку передадим методу loads
-    #     print(news_list)
-    #     return render_template('news.json', news=news_list)
-    lst = ['ANN', 'Tom', 'Bob']
-    return render_template('news.html', title="FOR", news=lst)
+    with open('news.json', "rt", encoding='utf-8') as f:  # открываем файл и считываем строки
+        news_list = json.loads(f.read())  # загрузим ту строку, кот. прочитал, строку передадим методу loads
+    return render_template('news.html', title="Новости", news=news_list)
+    # lst = ['ANN', 'Tom', 'Bob']
+    # return render_template('news.html', title="FOR", news=lst)
 
-
+@app.route('/vartest')
+def vartest():
+    return render_template('var_test.html', title="Переменные в HTML")
 
 @app.route('/slogan')
 def slogan():

@@ -5,8 +5,21 @@
     <title>{{ Title }}</title>
 </head>
 <body>
-  {% for item in news %}
-  <h3>{{ item }}</h3>
-  {% endfor %}
+    <dl>
+      {% for item in news ['news'] %}
+      <dt><b> {{ item ['title'] }} </b></dt>
+      <dd>  {{ item ['content'] }} </dd>
+      {% endfor %}
+    </dl>
 </body>
 </html>
+<!--
+{% for переменная in набор %}
+код
+{% endfor %}
+loop - переменная с полезными атрибутами
+index
+index 0
+first
+last
+-->
