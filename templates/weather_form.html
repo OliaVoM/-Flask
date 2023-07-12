@@ -1,0 +1,9 @@
+{% extends "base.html" %} <!-- расширяем базовый шаблон, лишнее убрали, так как это есть у нас уже в base -->
+
+{% block content %}
+<form method="post" class="login_form">
+    <input type="text" class="form-control" name="town" placeholder="Город"><br>
+    <button type="submit" class="btn btn-primary">Погода</button>
+</form>
+
+{% endblock %}
