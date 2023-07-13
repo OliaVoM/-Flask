@@ -1,7 +1,6 @@
 import sqlalchemy as sa
 import sqlalchemy.orm as orm  # будем обращаться к элементам БД как будто к атрибутам данного класса
-from sqlalchemy.orm import Session  # будеn отвечать за каждую сессию работы в БД
-import sqlalchemy.ext.declarative as dec #
+from sqlalchemy.orm import Session  # будет отвечать за каждую сессию работы в БД
 
 SqlAlchemyBase = orm.declarative_base()  # переменная, объект с пом. кот мы все будем делать
 
@@ -25,11 +24,10 @@ def global_init(db_file): # пора запускать БД, глобальна
     created = orm.sessionmaker(bind=engine)  # связываем глобальную переменную с созданным движком
 
 
-    from . import all_models # точка означает, что подключаемся по той же директории
+    from . import all_models    # точка означает, что подключаемся по той же директории
 
     SqlAlchemyBase.metadata.create_all(engine)
      # анататор функции -> будет возвращать сессию, не зависимо будет этот знак или нет
-
 
 def create_session() -> Session:
     global created

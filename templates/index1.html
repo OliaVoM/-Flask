@@ -1,6 +1,13 @@
 {% extends "base.html" %} <!-- расширяем базовый шаблон, лишнее убрали, так как это есть у нас уже в base -->
 
 {% block content %}
-<h1 class="grey">Hello, {{ username }}!</h1>
+<h1>Новости</h1>
+{% for item in news %}
+<div class="col border rounded">
+    <h2>{{ item.title }}</h2>
+    <div>{{ item.content }}</div>
+    <div>{{ item.user.name }} - {{ item.created_date }}</div>
 
+</div>
+{% endfor %}
 {% endblock %}
