@@ -5,6 +5,7 @@ from .db_session import SqlAlchemyBase
 from werkzeug.security import generate_password_hash  # цепная работа по обеспечению безопасности
 from werkzeug.security import check_password_hash
 
+
 class User(SqlAlchemyBase):  # какие будут поля в таблице
     __tablename__ = 'users'  # служебный атрибут, кот. укажет нашей таблице, что файл будет создан с таким-то именем
 
@@ -21,7 +22,7 @@ class User(SqlAlchemyBase):  # какие будут поля в таблице
         return f'{self.name} - {self.email}'
 
     def set_password(self, password):  # вводим пароль
-        self.hashed_password - generate_password_hash(password)  # преобразовывает пароль в свой код
+        self.hashed_password = generate_password_hash(password)  # преобразовывает пароль в свой код
 
     def check_password(self, password):
         return check_password_hash(self.hashed_password, password)  # здесь сверяет пароль в зашифрованном виде

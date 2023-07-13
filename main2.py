@@ -1,4 +1,4 @@
-from flask import Flask, url_for, request, redirect
+from flask import Flask, url_for, request, redirect, make_response
 from flask import render_template
 import json, requests
 from loginform import LoginForm
@@ -24,7 +24,7 @@ def well(): #  колодец
 @app.route('/')
 @app.route('/index1')
 def index1():
-    # return render_template('index.html', title='Работа с шаблонами', username="Слушатель")  # после этого в шаблон index.html вставится нужный
+    # return render_template('index1.html', title='Работа с шаблонами', username="Слушатель")  # после этого в шаблон index.html вставится нужный
     # param = {}
     # param['username'] = "Слушатель"
     # param['title'] = "Расширяем шаблоны"
@@ -78,7 +78,7 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         return redirect('/success')
-    return render_template('login.html', title='Авторизация', form=form) # раз форму вызвали form = LoginForm() , значить
+    return render_template('login.html', title='Авторизация', form=form)  # раз форму вызвали form = LoginForm() , значить
                                                                 # форму туда и должны передать -> вводим ещё один параметр form
                                                                 # создаем файл login.html
 
@@ -134,16 +134,19 @@ def load_photo():
         f.save('./static/images/loaded.png')  # куда сохраняем, переименовываем принудительно
         return '<h1>Файл у Вас на сервере </h1>'
 
-# @app.route('/cookie_test')
-# def cookie_test():
-#     visit_count = int(request.cookies.get('visit_count', 0))
-#     if visit_count:
-#         res = make_response(f'Были уже {visit_count + 1} раз')
-#         res.set_cookie('visit_count', str(visit_count + 1), max_age=60*60*24*365*2)
-#     else:
-#         res = make_response(f'Вы здесь впервые за 2 года')
-#         res.set_cookie('visit_count', str(visit_count + 1), max_age=60 * 60 * 24 * 365 * 2)
-
+#@app.route('/cookie_test')
+def cookie_test():
+    visit_count = int(request.cookies.get('visit_count', 0))
+    if visit_count:
+        res = make_response(f'Были уже {visit_count + 1} раз')
+        res.set_cookie('visit_count',
+                       str(visit_count + 1),
+                       max_age=60 * 60 * 24 * 365 * 2)
+    else:
+        res = make_response('Вы впервые здесь за 2 года')
+        res.set_cookie('visit_count', '1',
+                       max_age=60 * 60 * 24 * 365 * 2)
+    return res
 
 @app.route('/form_sample', methods=['GET', 'POST'])  # methods=['GET', 'POST'] Разрешили оба метода
 def form_sample():
@@ -158,7 +161,7 @@ def form_sample():
 
 if __name__ == '__main__':  # любой скрипт, кот. будем запускать он будет иметь имя main
     db_session.global_init('db/news.sqlite')  # в db должна появиться БД
-    app.run(host='127.0.0.1', port=5000, debug=True)  # указываем по какому хосту будем тестить наш сайт = по локальному,
+    app.run(host='127.0.0.1', port=8000, debug=True)  # указываем по какому хосту будем тестить наш сайт = по локальному,
     # # также надо указать порт (16 разрядов выделено под порты) можно добавить debug on/off включаем ли отладку
     # user = User()
     # user.name = 'Voldemar'
@@ -166,15 +169,15 @@ if __name__ == '__main__':  # любой скрипт, кот. будем зап
     # user.email = 'voldemar@mail.ru'
     # db_sess = db_session.create_session()
     # db_sess.add(user)
-    # db_sess.commit()
-    #
+
+    # #
     # user = User()
     # user.name = 'Dmitry'
     # user.about = 'gamer'
     # user.email = 'ljedmitriy@mail.ru'
     # db_sess = db_session.create_session()
     # db_sess.add(user)
-    # db_sess.commit()
+
 
     # user = User()
     # user.name = 'Mark'
@@ -182,16 +185,15 @@ if __name__ == '__main__':  # любой скрипт, кот. будем зап
     # user.email = 'ljeplumer@mail.ru'
     # db_sess = db_session.create_session()  #отвечает за подключение к нашей БД
     # db_sess.add(user)
-    # db_sess.commit()
 
     # db_sess = db_session.create_session()  # отвечает за подключение к нашей БД
     # id = db_sess.query(User).filter(User.id == 1).first()
-    # news = News(title='Новости от Владимира', content='На работе', user_id=id.id, is_private=False)  # добавляем новость
+    # news = News(title='Новости от Владимира', content='Пришел домой', user_id=id.id, is_private=False)  # добавляем новость
     # db_sess.add(news)
 
     # db_sess = db_session.create_session()  # отвечает за подключение к нашей БД
     # user = db_sess.query(User).filter(User.id == 1).first() # получили юзера с номером 1
-    # subj = News(title='Новости от Владимира №3', content='На работе', user_id=id.user, is_private=False) # добавляем новость
+    # subj = News(title='Новости от Владимира №3', content='Поехал в поликлинику', user_id=user.id, is_private=False) # добавляем новость
     # user.news.append(subj)  # обращаемся напрямую через методы классов
     #
     # # db_sess = db_session.create_session()  # отвечает за подключение к нашей БД
